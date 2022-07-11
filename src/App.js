@@ -12,66 +12,71 @@ function App() {
 
   let mapToCore = (char) => {
     switch (char) {
-      case 'q': return 'b';
-      case 'w': return 'ch';
-      case 'e': return 'd';
-      case 'r': return 'f';
+      case 'b': return 'b';//bat /b/
+      case 'c': return 'ch';//chat /tʃ/
+      case 'd': return 'd';//debt /d/
+      case 'f': return 'f';//fret /f/
 
-      case 'a': return 'g';
-      case 's': return 'h';
-      case 'd': return 'j';
-      case 'f': return 'k';
+      case 'g': return 'g';//get /g/
+      case 'h': return 'h';//hat /h/
+      case 'j': return 'j';//jet /dʒ/
+      case 'k': return 'k';//kid /k/
 
-      case 'z': return 'l';
-      case 'x': return 'm';
-      case 'c': return 'n';
-      case 'v': return 'ng';
+      case 'l': return 'l';//let /l/
+      case 'm': return 'm';//met /m/
+      case 'n': return 'n';//net /n/
+      case 'a': return 'ng';//king /ŋ/
 
-      case 'u': return 'p';
-      case 'i': return 'r';
-      case 'o': return 's';
-      case 'p': return 'sh';
+      case 'p': return 'p';//pet /p/
+      case 'r': return 'r';//rat /r/
+      case 's': return 's';//sat /s/
+      case 'u': return 'sh';//ship /ʃ/
 
-      case 'j': return 't';
-      case 'k': return 'th';
-      case 'l': return 'dh';
-      case 'h': return 'v';
+      case 't': return 't';//tent /t/
+      case 'i': return 'th';//thin /θ/
+      case 'o': return 'dh';//this /ð/
+      case 'v': return 'v';//vet /v/
 
-      case 'm': return 'w';
-      case 'g': return 'y';
-      case 't': return 'z';
-      case 'y': return 'zh';
+      case 'w': return 'w';//wet /w/
+      case 'y': return 'y';//yet /j/
+      case 'z': return 'z';//zit /z/
+      case 'e': return 'zh';//casual /ʒ/
 
-      case 'b': return '-';
-      case 'n': return '-';
+      case '.': return '-'; // maybe some of these ought to be inverters?
+      case ',': return '-';
+      case ';': return '-';
 
     }
     return '-'
   }
   let mapToShell = (char) => {
     switch (char) {
-      case 'a': return 'a';
-      case 's': return 'ar';
-      case 'd': return 'ah';
-      case 'f': return 'ay';
+      case 'a': return 'a'; //hat /æ/
+      case 'r': return 'ar'; //far /ar/
+      case 'h': return 'ah'; //law /ɑ/
+      case 'y': return 'ay'; //hey /e̩ɪ/
 
-      case 'j': return 'e';
-      case 'k': return 'ee';
-      case 'l': return 'eer';
-      case ';': return 'u';
+      case 'e': return 'e'; //pet /e/
+      case 'd': return 'ee'; //meet /i/
+      case 'f': return 'eer'; //beer /ir/
+      case 'u': return 'u'; //sunny /ə~ʌ/
 
-      case 'q': return 'er';
-      case 'w': return 'i';
-      case 'e': return 'ie';
-      case 'r': return 'ir';
+      case 's': return 'er'; //air /eɪr/
+      case 'i': return 'i'; //hit /ɪ/
+      case 'j': return 'ie'; //pie /aɪ/
+      case 'k': return 'ir'; //bird /ɜr/
 
-      case 'u': return 'o';
-      case 'i': return 'oy';
-      case 'o': return 'oo';
-      case 'p': return 'ou';
+      case 'o': return 'o'; //toe /oʊ/
+      case 'l': return 'oy'; //toy /oɪ/
+      case 'q': return 'oo'; //toon /u/
+      case 'w': return 'ou'; //book /ʊ/
 
-      case 'g': return 'ow';
-      case 'h': return 'or';
+      case 'p': return 'ow'; //how /aʊ/
+      case 'g': return 'or'; //more /or/
+
+      case '.': return '-'; // maybe some of these ought to be inverters?
+      case ',': return '-'; // don't really need these as you can just move on to the next word
+      case ';': return '-'; // but I hope it makes it feel consistent
     }
     return ''
   }
@@ -97,11 +102,24 @@ function App() {
         setCurrentCore('')
         setCurrentMod('')
         setCurrentShell('')
+        setIndex('core')
+      } else if (key === 'Backspace') {
+        setText('')
+        setCurrentMod('')
+        setCurrentShell('')
+        setCurrentCore('')
+        setIndex('core')
+      } else if (key === 'Escape') {
+        setCurrentMod('')
+        setCurrentShell('')
+        setCurrentCore('')
+        setIndex('core')
       } else if (key === ' ') {
         setText(text + currentCore + currentShell + currentMod + ' ')
         setCurrentCore('')
         setCurrentMod('')
         setCurrentShell('')
+        setIndex('core')
       } else if(index === 'core') {
         setIndex('shell')
         setCurrentCore(mapToCore(key))
