@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("./fonts/Tunic_v0.2.otf") format("woff2"),
+  url("./fonts/Tunic_v0.2.otf") format("woff");
+  font-weight: bold;
+  font-display: swap;
+}
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "Open Sans";
+  font-weight: 400;
+}
