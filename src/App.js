@@ -7,7 +7,7 @@ function App() {
   const [pkey, setpKey] = React.useState('');
   const [i, seti] = React.useState(0);
   const [currentShell, setCurrentShell] = React.useState('');
-  const [currentCore, setCurrentCore] = React.useState('');
+  const [currentCore, setCurrentCore] = React.useState('-');
   const [currentMod, setCurrentMod] = React.useState('');
   const [text, setText] = React.useState("");
 
@@ -82,7 +82,7 @@ function App() {
       } else if (key === 'Enter') {
         setpKey('')
         setText(text + currentCore + currentShell + currentMod)
-        setCurrentCore('')
+        setCurrentCore('-')
         setCurrentMod('')
         setCurrentShell('')
       } else if (key === 'Backspace') {
@@ -90,7 +90,7 @@ function App() {
         setText('')
         setCurrentMod('')
         setCurrentShell('')
-        setCurrentCore('')
+        setCurrentCore('-')
       }
       // for debugging the font itself
       // else if (key === 'Alt') {
@@ -121,17 +121,18 @@ function App() {
         setpKey('')
         setCurrentMod('')
         setCurrentShell('')
-        setCurrentCore('')
+        setCurrentCore('-')
       } else if (key === ' ') {
         setpKey('')
         setText(text + currentCore + currentShell + currentMod + ' ')
-        setCurrentCore('')
+        setCurrentCore('-')
         setCurrentMod('')
         setCurrentShell('')
       } else if (key == pkey) { // check if is repeat for t-9 like behavior
         let char = mapChars[key][i+1]
-        if (i+1 >= mapChars[key].length) {
+        if (undefined == char) {
           setpKey('')
+          char = '-'
         } else {
           seti(i+1)
         }
