@@ -39,8 +39,8 @@
 
 @font-face {
   font-family: "Open Sans";
-  src: url("./fonts/Tunic_v0.2.otf") format("woff2"),
-  url("./fonts/Tunic_v0.2.otf") format("woff");
+  src: url("./fonts/Tunic.ttf") format("woff2"),
+  url("./fonts/Tunic.ttf") format("woff");
   font-weight: bold;
   font-display: swap;
 }

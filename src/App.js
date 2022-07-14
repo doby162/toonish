@@ -4,81 +4,63 @@ import './App.css';
 
 function App() {
   const [key, setKey] = React.useState('');
+  const [pkey, setpKey] = React.useState('');
+  const [i, seti] = React.useState(0);
   const [currentShell, setCurrentShell] = React.useState('');
   const [currentCore, setCurrentCore] = React.useState('');
   const [currentMod, setCurrentMod] = React.useState('');
-  const [index, setIndex] = React.useState('core');
   const [text, setText] = React.useState("");
 
-  let mapToCore = (char) => {
-    switch (char) {
-      case 'b': return 'b';//bat /b/
-      case 'c': return 'ch';//chat /tʃ/
-      case 'd': return 'd';//debt /d/
-      case 'f': return 'f';//fret /f/
+  // all letters are mapped to a set of runes that make logical sense to an english speaker
+  // most vowels are overloaded, most consonants are not
+  // when there is a single cannonical IPA character, it is used
+  // when the IPA defines a symbol from tunish as having multiple characters (AKA are being ar)
+  // an otherwise unused character is picked at random.
+  // this step already had to be done for the original font to work based on ligatures.
+  // vowels that are 1 rune in tunish but multiple in IPA are almost always "R colored"
+  // I think they were included because they dramatically increase the number of single rune words
+  // if you "fear" the eyes of the "far" "shore" you know why this might be helpful
+  let mapChars = {
+    'a': [
+        'æ', 'Â', 'ɑ', 'é' // Â = 'ar'; é == eɪ
+    ],
+  'b': ['b'],
+  'c': ['ʧ'],
+  'd': ['d'],
+  'e': ['ɛ', 'i', 'Î', 'Ê'], // Î = ɪr; Ê = ɛr
+  'f': ['f'],
+  'g': ['g'],
+  'h': ['h'],
+  'i': ['I', 'á', 'ɝ'], // á = aɪ
+  'j': ['ʤ'],
+  'k': ['k'],
+  'l': ['ɫ'],
+  'm': ['m'],
+  'n': ['n', 'ŋ'],
+  'o': ['o', 'ó', 'ó', 'ú', 'ʊ', 'Ô'], // o = oʊ ó = ɔɪ ú = aʊ ʊ ?= oʊ (unclear) Ô = ʊə
+  'p': ['p'],
+  // 'q': ['k'],
+  'r': ['ɹ'],
+  's': ['s', 'sh'],
+  't': ['t', 'θ', 'ð'],
+  'u': ['ə'], // switch with e in the font
+  'v': ['v'],
+  'w': ['w'],
+  // 'x': ['ks'],
+  'y': ['j'],
+  'z': ['z', 'ʒ']}
 
-      case 'g': return 'g';//get /g/
-      case 'h': return 'h';//hat /h/
-      case 'j': return 'j';//jet /dʒ/
-      case 'k': return 'k';//kid /k/
-
-      case 'l': return 'l';//let /l/
-      case 'm': return 'm';//met /m/
-      case 'n': return 'n';//net /n/
-      case 'a': return 'ng';//king /ŋ/
-
-      case 'p': return 'p';//pet /p/
-      case 'r': return 'r';//rat /r/
-      case 's': return 's';//sat /s/
-      case 'u': return 'sh';//ship /ʃ/
-
-      case 't': return 't';//tent /t/
-      case 'i': return 'th';//thin /θ/
-      case 'o': return 'dh';//this /ð/
-      case 'v': return 'v';//vet /v/
-
-      case 'w': return 'w';//wet /w/
-      case 'y': return 'y';//yet /j/
-      case 'z': return 'z';//zit /z/
-      case 'e': return 'zh';//casual /ʒ/
-
-      case '.': return '-'; // maybe some of these ought to be inverters?
-      case ',': return '-';
-      case ';': return '-';
-
-    }
-    return '-'
+  let isCore = (char) => {
+    const vowels = ['a', 'e', 'i', 'o', 'u']
+    if (vowels.includes(char)) return true
+    return false;
   }
-  let mapToShell = (char) => {
-    switch (char) {
-      case 'a': return 'a'; //hat /æ/
-      case 'r': return 'ar'; //far /ar/
-      case 'h': return 'ah'; //law /ɑ/
-      case 'y': return 'ay'; //hey /e̩ɪ/
-
-      case 'e': return 'e'; //pet /e/
-      case 'd': return 'ee'; //meet /i/
-      case 'f': return 'eer'; //beer /ir/
-      case 'u': return 'u'; //sunny /ə~ʌ/
-
-      case 's': return 'er'; //air /eɪr/
-      case 'i': return 'i'; //hit /ɪ/
-      case 'j': return 'ie'; //pie /aɪ/
-      case 'k': return 'ir'; //bird /ɜr/
-
-      case 'o': return 'o'; //toe /oʊ/
-      case 'l': return 'oy'; //toy /oɪ/
-      case 'q': return 'oo'; //toon /u/
-      case 'w': return 'ou'; //book /ʊ/
-
-      case 'p': return 'ow'; //how /aʊ/
-      case 'g': return 'or'; //more /or/
-
-      case '.': return '-'; // maybe some of these ought to be inverters?
-      case ',': return '-'; // don't really need these as you can just move on to the next word
-      case ';': return '-'; // but I hope it makes it feel consistent
-    }
-    return ''
+  let vowelRunes = mapChars['a'].concat(mapChars['e']).concat(mapChars['i'])
+      .concat(mapChars['o']).concat(mapChars['u'])
+  vowelRunes = vowelRunes.flat()
+  let isCoreRune = (char) => {
+    if (vowelRunes.includes(char)) return true
+    return false
   }
 
  const onKeyPress = (e) => {
@@ -89,9 +71,8 @@ function App() {
   }
   React.useEffect(AddListener, [])
   React.useEffect(()=>{
-    console.log(key)
     if(key !== '') {
-      if(key === '-') {
+      if(key === 'q') {
         if(currentMod) {
           setCurrentMod('')
         } else {
@@ -102,33 +83,47 @@ function App() {
         setCurrentCore('')
         setCurrentMod('')
         setCurrentShell('')
-        setIndex('core')
       } else if (key === 'Backspace') {
         setText('')
         setCurrentMod('')
         setCurrentShell('')
         setCurrentCore('')
-        setIndex('core')
+      } else if (key === 'Alt') {
+        let allPossibleRunes = []
+        let testStrings = Object.values(mapChars).flat()
+        testStrings.map((rune1) => {
+          if (!isCoreRune(rune1)) {
+            testStrings.map((rune2) => {
+              if (isCoreRune(rune2)) {
+                allPossibleRunes.push(rune1+rune2)
+              }
+            })
+          }
+        })
+        let allPossibleRuneCombos = []
+        allPossibleRunes.map((rune1) => {
+          allPossibleRunes.map((rune2) => {
+            allPossibleRuneCombos.push(rune1)
+            allPossibleRuneCombos.push(rune2)
+            allPossibleRuneCombos.push(rune1+rune2)
+          })
+        })
+        let bigString = ''
+        allPossibleRuneCombos.forEach((c) => bigString = bigString + c + ' ')
+        setText(bigString)
       } else if (key === 'Escape') {
         setCurrentMod('')
         setCurrentShell('')
         setCurrentCore('')
-        setIndex('core')
       } else if (key === ' ') {
         setText(text + currentCore + currentShell + currentMod + ' ')
         setCurrentCore('')
         setCurrentMod('')
         setCurrentShell('')
-        setIndex('core')
-      } else if(index === 'core') {
-        setIndex('shell')
-        setCurrentCore(mapToCore(key))
-      } else {
-        setIndex('core')
-        setCurrentShell(mapToShell(key))
+      } else if (isCore(key)) { // check if is repeat for that logic
+
       }
 
-      console.log(currentCore + currentShell + currentMod)
       setKey('')
     }
   }, [key])
@@ -152,3 +147,66 @@ function App() {
 }
 
 export default App;
+
+// shell mods
+// top left: w
+// top right: r
+// bottom left: s
+// bottom right: f
+// left: d
+// inverter: e
+// fill all: a
+//
+// core mods
+// top left: u
+// top middle: i
+// top right: o
+// bottom left: j
+// bottom middle: k
+// bottom right: l
+// fill all: ;
+//
+// enter: copy finished rune to word and end word
+// space: copy  finished rune to word
+// tab: finish word without copying a rune, basically space tab is equivilant to enter.
+// escape: delete sentence
+// backspace: remove a rune or symbol. Or for simplicity, delete back to the most recent space char.
+// punctuation: enters actual punctuation ahead of the current rune
+// numbers: actual numbers ahead of the current rune
+// @ sign: is a weird one because the font just straight up displays the word at lol. I _think_ that's ok as is- kind of nifty
+//
+// it is possible via this method to specify an impossible rune, IE by only having the leftmost shell segment or by only having 1 core segment.
+// ideally I would just display these symbols anyway but I think invalid vowels should be omitted and invalid consanants replaced with a -
+// the "final" solution would be to enhance the font but that's out of scope for now. Or I could display the runes without the font!
+// that reminds me, it would be smart to block underscores and dashes from being entered, since they are going to screw up the ligatures.
+// a key to toggle code tags would also be a really interesting addition.
+// also, I think it would make sense to modify the rune in one piece, rather than in two pieces. Maybe the rune could be really big in the middle while you work on it, complete with the horizontal line
+//
+// ideally the rune you are working on would also have the phonetic symbols to tell you what it sounds like
+
+// a glass arm swan bay
+// b baby
+// c chat
+// d dog
+// e end bee beer air
+// f fox
+// g gun
+// h hop
+// i bit guy bird
+// j jam
+// k kart
+// l live
+// m man
+// n net rink
+// o toe toy too wolf how ore
+// p pop
+// q (k and w ?)
+// r run
+// s sit shut
+// t tunic thick the
+// u the
+// v vine
+// w wit
+// x (could do a k and s rune)
+// y you
+// z zit azure
