@@ -13,11 +13,12 @@ function App() {
 
   // all letters are mapped to a set of runes that make logical sense to an english speaker
   // most vowels are overloaded, most consonants are not
-  // when there is a single cannonical IPA character, it is used
+  // when there is a single canonical IPA character, it is used
   // when the IPA defines a symbol from tunish as having multiple characters (AKA are being ar)
   // an otherwise unused character is picked at random.
   // this step already had to be done for the original font to work based on ligatures.
   // vowels that are 1 rune in tunish but multiple in IPA are almost always "R colored"
+  // but are also sometimes other diphthongs
   // I think they were included because they dramatically increase the number of single rune words
   // if you "fear" the eyes of the "far" "shore" you know why this might be helpful
   let mapChars = {
@@ -50,7 +51,7 @@ function App() {
   'y': ['j'],
   'z': ['z', 'ʒ']}
 
-  let isCore = (char) => {
+  let isVowel = (char) => {
     const vowels = ['a', 'e', 'i', 'o', 'u']
     if (vowels.includes(char)) return true
     return false;
@@ -58,7 +59,7 @@ function App() {
   let vowelRunes = mapChars['a'].concat(mapChars['e']).concat(mapChars['i'])
       .concat(mapChars['o']).concat(mapChars['u'])
   vowelRunes = vowelRunes.flat()
-  let isCoreRune = (char) => {
+  let isVowelRune = (char) => {
     if (vowelRunes.includes(char)) return true
     return false
   }
@@ -92,9 +93,9 @@ function App() {
         let allPossibleRunes = []
         let testStrings = Object.values(mapChars).flat()
         testStrings.map((rune1) => {
-          if (!isCoreRune(rune1)) {
+          if (!isVowelRune(rune1)) {
             testStrings.map((rune2) => {
-              if (isCoreRune(rune2)) {
+              if (isVowelRune(rune2)) {
                 allPossibleRunes.push(rune1+rune2)
               }
             })
@@ -120,8 +121,23 @@ function App() {
         setCurrentCore('')
         setCurrentMod('')
         setCurrentShell('')
-      } else if (isCore(key)) { // check if is repeat for that logic
-
+      } else if (key == pkey) { // check if is repeat for t-9 like behavior
+          let char = mapChars[key][i+1]
+          seti(i+1)
+        if (isVowel(key)) {
+          setCurrentShell(char)
+        } else {
+          setCurrentCore(char)
+        }
+      } else {
+        seti(0)
+        setpKey(key)
+        let char = mapChars[key][0]
+        if (isVowel(key)) {
+          setCurrentShell(char)
+        } else {
+          setCurrentCore(char)
+        }
       }
 
       setKey('')
