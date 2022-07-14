@@ -42,7 +42,7 @@ function App() {
   'p': ['p'],
   // 'q': ['k'],
   'r': ['ɹ'],
-  's': ['s', 'sh'],
+  's': ['s', 'ʃ'],
   't': ['t', 'θ', 'ð'],
   'u': ['ə'], // switch with e in the font
   'v': ['v'],
