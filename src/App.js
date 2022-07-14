@@ -80,56 +80,67 @@ function App() {
           setCurrentMod('_')
         }
       } else if (key === 'Enter') {
+        setpKey('')
         setText(text + currentCore + currentShell + currentMod)
         setCurrentCore('')
         setCurrentMod('')
         setCurrentShell('')
       } else if (key === 'Backspace') {
+        setpKey('')
         setText('')
         setCurrentMod('')
         setCurrentShell('')
         setCurrentCore('')
-      } else if (key === 'Alt') {
-        let allPossibleRunes = []
-        let testStrings = Object.values(mapChars).flat()
-        testStrings.map((rune1) => {
-          if (!isVowelRune(rune1)) {
-            testStrings.map((rune2) => {
-              if (isVowelRune(rune2)) {
-                allPossibleRunes.push(rune1+rune2)
-              }
-            })
-          }
-        })
-        let allPossibleRuneCombos = []
-        allPossibleRunes.map((rune1) => {
-          allPossibleRunes.map((rune2) => {
-            allPossibleRuneCombos.push(rune1)
-            allPossibleRuneCombos.push(rune2)
-            allPossibleRuneCombos.push(rune1+rune2)
-          })
-        })
-        let bigString = ''
-        allPossibleRuneCombos.forEach((c) => bigString = bigString + c + ' ')
-        setText(bigString)
-      } else if (key === 'Escape') {
+      }
+      // for debugging the font itself
+      // else if (key === 'Alt') {
+      //   let allPossibleRunes = []
+      //   let testStrings = Object.values(mapChars).flat()
+      //   testStrings.map((rune1) => {
+      //     if (!isVowelRune(rune1)) {
+      //       testStrings.map((rune2) => {
+      //         if (isVowelRune(rune2)) {
+      //           allPossibleRunes.push(rune1+rune2)
+      //         }
+      //       })
+      //     }
+      //   })
+      //   let allPossibleRuneCombos = []
+      //   allPossibleRunes.map((rune1) => {
+      //     allPossibleRunes.map((rune2) => {
+      //       allPossibleRuneCombos.push(rune1)
+      //       allPossibleRuneCombos.push(rune2)
+      //       allPossibleRuneCombos.push(rune1+rune2)
+      //     })
+      //   })
+      //   let bigString = ''
+      //   allPossibleRuneCombos.forEach((c) => bigString = bigString + c + ' ')
+      //   setText(bigString)
+      // }
+      else if (key === 'Escape') {
+        setpKey('')
         setCurrentMod('')
         setCurrentShell('')
         setCurrentCore('')
       } else if (key === ' ') {
+        setpKey('')
         setText(text + currentCore + currentShell + currentMod + ' ')
         setCurrentCore('')
         setCurrentMod('')
         setCurrentShell('')
       } else if (key == pkey) { // check if is repeat for t-9 like behavior
-          let char = mapChars[key][i+1]
+        let char = mapChars[key][i+1]
+        if (i+1 >= mapChars[key].length) {
+          setpKey('')
+        } else {
           seti(i+1)
+        }
         if (isVowel(key)) {
           setCurrentShell(char)
         } else {
           setCurrentCore(char)
         }
-      } else {
+      } else if (Object.keys(mapChars).includes(key)) {
         seti(0)
         setpKey(key)
         let char = mapChars[key][0]
