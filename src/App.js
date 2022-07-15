@@ -22,6 +22,7 @@ function App() {
   const [currentCore, setCurrentCore] = React.useState('-');
   const [currentMod, setCurrentMod] = React.useState('');
   const [text, setText] = React.useState("");
+  const [inputText, setInputText] = React.useState('');
 
   // all letters are mapped to a set of runes that make logical sense to an english speaker
   // most vowels are overloaded, most consonants are not
@@ -99,7 +100,7 @@ function App() {
         setText(text.slice(0, index))
       }
       else if (key === 'Alt') {
-        navigator.clipboard.writeText("http://localhost:3000?msg=" + encodeURI(text));
+        navigator.clipboard.writeText("http://192.168.1.169:3000?msg=" + encodeURI(text));
       }
       else if (key === 'Escape') {
         setpKey('')
@@ -160,6 +161,13 @@ function App() {
         <p>{currentShell}</p>
         <p>{currentCore}{currentShell}{currentMod}</p>
         <p>{text}</p>
+        <button onClick={()=>{setKey('Enter')}}> nɛ_-ɝ ɹún </button>
+        <button onClick={()=>{setKey(' ')}}> nɛd wÔd </button>
+        <button onClick={()=>{setKey('Backspace')}}> dɛɫit wÔd </button>
+        <button onClick={()=>{setKey('Alt')}}> ʃÊ </button>
+        <input value={inputText} onChange={(e) => {
+          setKey(e.nativeEvent.data)
+        }}/>
       </header>
     </div>
   );
