@@ -7,7 +7,7 @@ function getQueryVariable(variable) {
   var vars = query.split("&");
   for (var i=0;i<vars.length;i++) {
     var pair = vars[i].split("=");
-    if (pair[0] == variable) {
+    if (pair[0] === variable) {
       return pair[1];
     }
   }
@@ -66,15 +66,9 @@ function App() {
     if (vowels.includes(char)) return true
     return false;
   }
-  let vowelRunes = mapChars['a'].concat(mapChars['e']).concat(mapChars['i'])
-      .concat(mapChars['o']).concat(mapChars['u'])
-  vowelRunes = vowelRunes.flat()
-  let isVowelRune = (char) => {
-    if (vowelRunes.includes(char)) return true
-    return false
-  }
 
  const onKeyPress = (e) => {
+    e.preventDefault()
     setKey(e.key)
  }
   let AddListener = () => {
@@ -84,7 +78,7 @@ function App() {
   React.useEffect(()=>{setText(decodeURI(getQueryVariable('msg')))}, [])
   React.useEffect(()=>{
     if(key !== '') {
-      if(key === 'q' || key === '.' || key == ';' || key == ',') {
+      if(key === 'q' || key === '.' || key === ';' || key === ',') {
         if(currentMod) {
           setCurrentMod('')
         } else {
@@ -117,9 +111,9 @@ function App() {
         setCurrentCore('-')
         setCurrentMod('')
         setCurrentShell('')
-      } else if (key == pkey) { // check if is repeat for t-9 like behavior
+      } else if (key === pkey) { // check if is repeat for t-9 like behavior
         let char = mapChars[key][i+1]
-        if (undefined == char) {
+        if (undefined === char) {
           setpKey('')
           char = '-'
           if (isVowel(key)) {
