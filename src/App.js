@@ -100,7 +100,7 @@ function App() {
         setText(text.slice(0, index))
       }
       else if (key === 'Alt') {
-        navigator.clipboard.writeText("http://192.168.1.169:3000?msg=" + encodeURI(text));
+        navigator.clipboard.writeText("https://doby162.github.io/toonish?msg=" + encodeURI(text));
       }
       else if (key === 'Escape') {
         setpKey('')
