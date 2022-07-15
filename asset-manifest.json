@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/trunicTyper/static/css/main.9037927d.css",
+    "main.js": "/trunicTyper/static/js/main.b5c769e3.js",
+    "static/js/787.8d000acb.chunk.js": "/trunicTyper/static/js/787.8d000acb.chunk.js",
+    "static/media/Tunic.ttf": "/trunicTyper/static/media/Tunic.d73bff9732b4cabe6b3b.ttf",
+    "static/media/logo.svg": "/trunicTyper/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/trunicTyper/index.html",
+    "main.9037927d.css.map": "/trunicTyper/static/css/main.9037927d.css.map",
+    "main.b5c769e3.js.map": "/trunicTyper/static/js/main.b5c769e3.js.map",
+    "787.8d000acb.chunk.js.map": "/trunicTyper/static/js/787.8d000acb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9037927d.css",
+    "static/js/main.b5c769e3.js"
+  ]
+}
