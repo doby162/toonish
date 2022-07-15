@@ -2,6 +2,18 @@ import logo from './logo.svg';
 import React from "react";
 import './App.css';
 
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+  }
+  return '';
+}
+
 function App() {
   const [key, setKey] = React.useState('');
   const [pkey, setpKey] = React.useState('');
@@ -38,16 +50,14 @@ function App() {
   'l': ['ɫ'],
   'm': ['m'],
   'n': ['n', 'ŋ'],
-  'o': ['o', 'ó', 'ó', 'ú', 'ʊ', 'Ô'], // o = oʊ ó = ɔɪ ú = aʊ ʊ ?= oʊ (unclear) Ô = ʊə
+  'o': ['o', 'ó', 'å', 'ú', 'ʊ', 'Ô'], // o = oʊ ó = ɔɪ ú = u ʊ ?= oʊ (unclear) Ô = ʊə å = aʊ
   'p': ['p'],
-  // 'q': ['k'],
   'r': ['ɹ'],
   's': ['s', 'ʃ'],
   't': ['t', 'θ', 'ð'],
-  'u': ['ə'], // switch with e in the font
+  'u': ['ə'],
   'v': ['v'],
   'w': ['w'],
-  // 'x': ['ks'],
   'y': ['j'],
   'z': ['z', 'ʒ']}
 
@@ -71,9 +81,10 @@ function App() {
     document.addEventListener('keydown', onKeyPress)
   }
   React.useEffect(AddListener, [])
+  React.useEffect(()=>{setText(decodeURI(getQueryVariable('msg')))}, [])
   React.useEffect(()=>{
     if(key !== '') {
-      if(key === 'q') {
+      if(key === 'q' || key === '.' || key == ';' || key == ',') {
         if(currentMod) {
           setCurrentMod('')
         } else {
@@ -92,31 +103,9 @@ function App() {
         setCurrentShell('')
         setCurrentCore('-')
       }
-      // for debugging the font itself
-      // else if (key === 'Alt') {
-      //   let allPossibleRunes = []
-      //   let testStrings = Object.values(mapChars).flat()
-      //   testStrings.map((rune1) => {
-      //     if (!isVowelRune(rune1)) {
-      //       testStrings.map((rune2) => {
-      //         if (isVowelRune(rune2)) {
-      //           allPossibleRunes.push(rune1+rune2)
-      //         }
-      //       })
-      //     }
-      //   })
-      //   let allPossibleRuneCombos = []
-      //   allPossibleRunes.map((rune1) => {
-      //     allPossibleRunes.map((rune2) => {
-      //       allPossibleRuneCombos.push(rune1)
-      //       allPossibleRuneCombos.push(rune2)
-      //       allPossibleRuneCombos.push(rune1+rune2)
-      //     })
-      //   })
-      //   let bigString = ''
-      //   allPossibleRuneCombos.forEach((c) => bigString = bigString + c + ' ')
-      //   setText(bigString)
-      // }
+      else if (key === 'Alt') {
+        navigator.clipboard.writeText("http://localhost:3000?msg=" + encodeURI(text));
+      }
       else if (key === 'Escape') {
         setpKey('')
         setCurrentMod('')
@@ -133,6 +122,9 @@ function App() {
         if (undefined == char) {
           setpKey('')
           char = '-'
+          if (isVowel(key)) {
+            char = '' // vowels have '' as blank, not -
+          }
         } else {
           seti(i+1)
         }
@@ -175,66 +167,3 @@ function App() {
 }
 
 export default App;
-
-// shell mods
-// top left: w
-// top right: r
-// bottom left: s
-// bottom right: f
-// left: d
-// inverter: e
-// fill all: a
-//
-// core mods
-// top left: u
-// top middle: i
-// top right: o
-// bottom left: j
-// bottom middle: k
-// bottom right: l
-// fill all: ;
-//
-// enter: copy finished rune to word and end word
-// space: copy  finished rune to word
-// tab: finish word without copying a rune, basically space tab is equivilant to enter.
-// escape: delete sentence
-// backspace: remove a rune or symbol. Or for simplicity, delete back to the most recent space char.
-// punctuation: enters actual punctuation ahead of the current rune
-// numbers: actual numbers ahead of the current rune
-// @ sign: is a weird one because the font just straight up displays the word at lol. I _think_ that's ok as is- kind of nifty
-//
-// it is possible via this method to specify an impossible rune, IE by only having the leftmost shell segment or by only having 1 core segment.
-// ideally I would just display these symbols anyway but I think invalid vowels should be omitted and invalid consanants replaced with a -
-// the "final" solution would be to enhance the font but that's out of scope for now. Or I could display the runes without the font!
-// that reminds me, it would be smart to block underscores and dashes from being entered, since they are going to screw up the ligatures.
-// a key to toggle code tags would also be a really interesting addition.
-// also, I think it would make sense to modify the rune in one piece, rather than in two pieces. Maybe the rune could be really big in the middle while you work on it, complete with the horizontal line
-//
-// ideally the rune you are working on would also have the phonetic symbols to tell you what it sounds like
-
-// a glass arm swan bay
-// b baby
-// c chat
-// d dog
-// e end bee beer air
-// f fox
-// g gun
-// h hop
-// i bit guy bird
-// j jam
-// k kart
-// l live
-// m man
-// n net rink
-// o toe toy too wolf how ore
-// p pop
-// q (k and w ?)
-// r run
-// s sit shut
-// t tunic thick the
-// u the
-// v vine
-// w wit
-// x (could do a k and s rune)
-// y you
-// z zit azure
