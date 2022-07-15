@@ -100,7 +100,7 @@ function App() {
         setText(text.slice(0, index))
       }
       else if (key === 'Alt') {
-        navigator.clipboard.writeText("https://doby162.github.io/toonish?msg=" + encodeURI(text));
+        navigator.clipboard.writeText("https://doby162.github.io/toonish/?msg=" + encodeURI(text));
       }
       else if (key === 'Escape') {
         setpKey('')
@@ -153,9 +153,9 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          de_ti_ <code>src/App.js</code> na_d sayv too reelod.
+          dɛ_tI_ <code>src/App.js</code> næ_t sév tú ɹiɫod
         </p>
-        <p>pleez enjoy</p>
+        <p>pɫiz nɛ_ʤó</p>
         <p><code>----------------</code></p>
         <p>{currentCore}</p>
         <p>{currentShell}</p>
