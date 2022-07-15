@@ -161,11 +161,11 @@ function App() {
         <p>{currentShell}</p>
         <p>{currentCore}{currentShell}{currentMod}</p>
         <p>{text}</p>
-        <button onClick={()=>{setKey('Enter')}}> nɛ_-ɝ ɹún </button>
-        <button onClick={()=>{setKey(' ')}}> nɛd wÔd </button>
-        <button onClick={()=>{setKey('Backspace')}}> dɛɫit wÔd </button>
-        <button onClick={()=>{setKey('Alt')}}> ʃÊ </button>
-        <input value={inputText} onChange={(e) => {
+        <button onClick={()=>{setKey('Enter')}}> nɛ_-ɝ ɹún <code>(enter)</code> </button>
+        <button onClick={()=>{setKey(' ')}}> nɛd wÔd <code>(space)</code> </button>
+        <button onClick={()=>{setKey('Backspace')}}> dɛɫit wÔd <code>(backspace)</code> </button>
+        <button onClick={()=>{setKey('Alt')}}> ʃÊ <code>(alt)</code></button>
+        <input placeholder={"ʧɫIk tú nɛ_tÊ ɹúns"} value={inputText} onChange={(e) => {
           setKey(e.nativeEvent.data)
         }}/>
       </header>
