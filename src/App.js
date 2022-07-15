@@ -92,10 +92,11 @@ function App() {
         setCurrentShell('')
       } else if (key === 'Backspace') {
         setpKey('')
-        setText('')
         setCurrentMod('')
         setCurrentShell('')
         setCurrentCore('-')
+        let index = text.lastIndexOf(' ')
+        setText(text.slice(0, index))
       }
       else if (key === 'Alt') {
         navigator.clipboard.writeText("http://localhost:3000?msg=" + encodeURI(text));
@@ -107,7 +108,11 @@ function App() {
         setCurrentCore('-')
       } else if (key === ' ') {
         setpKey('')
-        setText(text + currentCore + currentShell + currentMod + ' ')
+        if (currentMod || currentShell || currentCore !== '-') {
+          setText(text + currentCore + currentShell + currentMod + ' ')
+        } else if (!text.endsWith(' ')) {
+          setText(text + ' ')
+        }
         setCurrentCore('-')
         setCurrentMod('')
         setCurrentShell('')
